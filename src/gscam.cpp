@@ -139,7 +139,7 @@ bool GSCam::configure()
   // Get acquisition and gst timestamp offset
   auto param_desc = rcl_interfaces::msg::ParameterDescriptor{};
   param_desc.description = "Time offset [seconds] between gst_timestamps and camera shutter.";
-  acquisition_offset_ = 1000000000UL * declare_parameter<double>("acquisition_offset", 0.0, param_desc);
+  acquisition_offset_ = declare_parameter<int64_t>("acquisition_offset", 0, param_desc);
 
   return true;
 }
