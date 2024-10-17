@@ -136,6 +136,11 @@ bool GSCam::configure()
 
   use_sensor_data_qos_ = declare_parameter("use_sensor_data_qos", false);
 
+  // Get acquisition and gst timestamp offset
+  auto param_desc = rcl_interfaces::msg::ParameterDescriptor{};
+  param_desc.description = "Time offset [seconds] between gst_timestamps and camera shutter.";
+  acquisition_offset_ = declare_parameter<int64_t>("acquisition_offset", 0, param_desc);
+
   return true;
 }
 
@@ -353,7 +358,8 @@ void GSCam::publish_stream()
     sensor_msgs::msg::CameraInfo::SharedPtr cinfo;
     cinfo.reset(new sensor_msgs::msg::CameraInfo(cur_cinfo));
     if (use_gst_timestamps_) {
-      cinfo->header.stamp = rclcpp::Time(GST_TIME_AS_NSECONDS(buf->pts + bt) + time_offset_);
+      cinfo->header.stamp = rclcpp::Time(
+        GST_TIME_AS_NSECONDS(buf->pts + bt) + time_offset_ - acquisition_offset_);
     } else {
       cinfo->header.stamp = now();
     }

@@ -62,6 +62,7 @@ Note that GStreamer is licensed under the LGPL, and GStreamer plugins have their
 * `use_gst_timestamps`: Use the GStreamer buffer timestamps for the image message header timestamps (setting this to `false` results in header timestamps being the time that the image buffer transfer is completed)
 * `image_encoding`: image encoding ("rgb8", "mono8", "yuv422", "jpeg")
 * `use_sensor_data_qos`: The flag to use sensor data qos for camera topic(image, camera_info)
+* `acquisition_offset`: Time offset (in nanoseconds) between camera acquisition and gst_timestamp. Effective only with `use_gst_timestamps` set to `true`.
 
 ## Examples
 
